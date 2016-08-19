@@ -1,0 +1,116 @@
+; ------------ START CLIENT COMMANDS --------------
+[write_file]
+file = C:/DPS/Control/core_control_2bgeoprof.xml
+contents =
+	<?xml version="1.0" ?>
+
+	<core_control>
+
+		<global_attributes>
+			<ID_CENTER_URL>http://cloudsat.cira.colostate.edu</ID_CENTER_URL>
+			<ID_CENTER>CloudSat Data Processing Center</ID_CENTER>
+			<ID_SITE>Cooperative Institute for Research in the Atmosphere</ID_SITE>
+		</global_attributes>
+
+		<input_files>
+			<filename>*_CS_1B-CPR_GRANULE_P_R04_E02.hdf</filename>
+			<filename>*_CS_MODIS-AUX_GRANULE_P_R04_E02.hdf</filename>
+			<filename>*_CS_ECMWF-AUX_GRANULE_P_R04_E02.hdf</filename>
+		</input_files>
+
+		// RUN 2B-GEOPROF Version 5.3 //
+		<file_io operation="read">
+			<directory name="">
+				<file id="1B-CPR" name="*_CS_1B-CPR_GRANULE_P_R04_E06.hdf" type="hdfeos4">
+					<only>
+						<field>Longitude</field>
+						<field>Latitude</field>
+						<field>Range_to_intercept</field>
+						<field>RayHeader_lambda</field>
+						<field>RadarCoefficient</field>
+						<field>ReceivedEchoPowers</field>
+						<field>RayHeader_RangeBinSize</field>
+						<field>Range_to_first_bin</field>
+						<field>SurfaceBinNumber</field>
+						<field>DEM_elevation</field>
+						<field>Profile_time</field>
+						<field>Pitch_offset</field>
+						<field>Roll_offset</field>
+						<field>Sigma-Zero</field>
+						<field>FlatSurfaceClutter</field>
+						<field>SurfaceClutter_Index</field>
+						<field>SurfaceBinNumber_Fraction</field>
+						<field>Navigation_land_sea_flag</field>
+						<field>TransmitPower_Avg</field>
+						<field>TAI_start</field>
+						<field>UTC_start</field>
+						<field>Data_quality</field>
+						<field>Data_status</field>
+						<field>Data_targetID</field>
+					</only>
+				</file>
+				<file id="MODIS-AUX" name="*_CS_MODIS-AUX_GRANULE_P_R04_E02.hdf" type="hdfeos4">
+					<only>
+						<field>Cloud_Mask</field>
+						<field>MODIS_longitude</field>
+						<field>MODIS_latitude</field>
+						<field>EV_1KM_RefSB</field>
+						<field>EV_1KM_RefSB_rad_scales</field>
+						<field>EV_1KM_RefSB_rad_offsets</field>
+						<field>EV_1KM_RefSB_ref_scales</field>
+						<field>EV_1KM_RefSB_ref_offsets</field>
+						<field>EV_1KM_RefSB_Uncert_Indexes</field>
+						<field>EV_1KM_RefSB_spec_uncert</field>
+						<field>EV_1KM_RefSB_scaling_factor</field>
+						<field>EV_1KM_Emissive</field>
+						<field>EV_1KM_Emissive_rad_scales</field>
+						<field>EV_1KM_Emissive_rad_offsets</field>
+						<field>EV_1KM_Emissive_Uncert_Indexes</field>
+						<field>EV_1KM_Emissive_spec_uncert</field>
+						<field>EV_1KM_Emissive_scaling_factor</field>
+						<field>EV_250_RefSB</field>
+						<field>EV_250_RefSB_rad_scales</field>
+						<field>EV_250_RefSB_rad_offsets</field>
+						<field>EV_250_RefSB_ref_scales</field>
+						<field>EV_250_RefSB_ref_offsets</field>
+						<field>EV_250_RefSB_Uncert_Indexes</field>
+						<field>EV_250_RefSB_spec_uncert</field>
+						<field>EV_250_RefSB_scaling_factor</field>
+						<field>MODIS_granule_index</field>
+					</only>
+				</file>
+				<file id="ECMWF-AUX" name="*_CS_ECMWF-AUX_GRANULE_P_R04_E02.hdf" type="hdfeos4">
+					<only>
+						<field>Pressure</field>
+						<field>Temperature</field>
+						<field>Specific_humidity</field>
+					</only>
+				</file>
+			</directory>
+		</file_io>
+
+		<run_algorithm name="2B-GEOPROF">
+			<product name="2B-GEOPROF">
+				<attribute name="prod_version">011</attribute>
+			</product>
+		</run_algorithm>
+
+		<file_io operation="write">
+			<directory name="C:\DPS\Data\Products\">
+				<file id="2B-GEOPROF" name="*_CS_2B-GEOPROF_GRANULE_P_R04_E02.hdf" type="hdfeos4"/>
+			</directory>
+		</file_io>
+
+	</core_control>
+
+[execute]
+executable = //CSOPS/C$/DPS_Staging/GRID/Executables/Production/CORE_GEO_R04_10.exe
+complete_code = CORE FINISHED
+update_database = YES
+
+[move]
+from = C:/DPS/Data/Products/*
+to = MassStorage
+
+[cleanup]
+delete = C:/DPS/Data/Products/*

@@ -1,0 +1,9 @@
+output/*
+output.*
+anotherjobtemplate
+__pycache__.*
+__pycache__/*
+old_templates/*
+bad_templates/*
+input_files/*
+*.pyc
